@@ -14,7 +14,9 @@ def input_page():
         if len(text.strip()) == 0:
             return render_template('index.html', error="Label has to contain text")
 
-        emulated_args = [text]
+        # TODO checkbox toggle for on off multiline
+        # so difference between `dymoprint Hello World` and `dymoprint "Hello World"`
+        emulated_args = text.split(" ")
         args = dymoprint.parse_args(emulated_args)
         try:
             dymoprint.main(args)
