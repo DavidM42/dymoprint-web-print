@@ -77,6 +77,18 @@ CONFIG_FILE     = 'dymoprint.ini'
 VERSION         = "0.3.4 (2016-03-14)"
 
 
+class DymoPrintException(Exception):
+    """Exception raised for errors in dymoprint driver printing
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 class DymoLabeler:
     """Create and work with a Dymo LabelManager PnP object.
 
@@ -332,10 +344,10 @@ if USE_BARCODE:
             return filename
 
 
-def die(message=None):
+def raiseException(message=None):
     if message:
         print(message, file=sys.stderr)
-    sys.exit(1)
+    raise DymoPrintException(message)
 
 
 def pprint(par, fd=sys.stdout):
@@ -408,7 +420,7 @@ def read_config(conf_file):
     else:
         # reading FONTS section
         if not 'FONTS' in conf.sections():
-            die('! config file "%s" not valid. Please change or remove.' %conf_file)
+            raiseException('! config file "%s" not valid. Please change or remove.' %conf_file)
         for key in FONT_CONFIG.keys():
             FONT_CONFIG[key] = conf.get('FONTS',key)
         # more sections later ..
@@ -447,7 +459,7 @@ def draw_image(bitmap):
     finally:
         del drawobj
 
-def parse_args():
+def parse_args(args=None):
     # check for any text specified on the command line
     parser = argparse.ArgumentParser(description=DESCRIPTION+' \n Version: '+VERSION)
     parser.add_argument('text',nargs='+',help='Text Parameter, each parameter gives a new line',type=to_unicode)
@@ -462,7 +474,10 @@ def parse_args():
     parser.add_argument('-m',type=int,help='Override margin (default is 56*2)')
     #parser.add_argument('-t',type=int,choices=[6, 9, 12],default=12,help='Tape size: 6,9,12 mm, default=12mm')
     parser.add_argument('-pdb',action='store_true',help='Run pdb if an exception occurs')
-    return parser.parse_args()
+    if args == None:
+        return parser.parse_args()
+    else:
+        return parser.parse_args(args)
 
 def main(args):
     # read config file
@@ -486,17 +501,17 @@ def main(args):
         if os.path.isfile(args.u):
             FONT_FILENAME = args.u
         else:
-            die("Error: file '%s' not found." % args.u)
+            raiseException("Error: file '%s' not found." % args.u)
 
     # check if barcode, qrcode or text should be printed, use frames only on text
     if args.qr and not USE_QR:
-        die("Error: %s" % e_qrcode)
+        raiseException("Error: %s" % e_qrcode)
 
     if args.c and not USE_BARCODE:
-        die("Error: %s" % e_barcode)
+        raiseException("Error: %s" % e_barcode)
 
     if args.c and args.qr:
-        die("Error: can not print both QR and Barcode on the same label (yet)")
+        raiseException("Error: can not print both QR and Barcode on the same label (yet)")
 
     bitmaps = []
 
@@ -512,7 +527,7 @@ def main(args):
         qr_offset = (labelheight - len(qr_text)*qr_scale) // 2
 
         if not qr_scale:
-            die("Error: too much information to store in the QR code, points are smaller than the device resolution")
+            raiseException("Error: too much information to store in the QR code, points are smaller than the device resolution")
 
         codebitmap = Image.new('1', (labelwidth, labelheight))
 
@@ -589,7 +604,7 @@ def main(args):
     labelstream = labelrotated.tobytes()
     labelstreamrowlength = int(math.ceil(labelbitmap.height/8))
     if len(labelstream)//labelstreamrowlength != labelbitmap.width:
-        die('An internal problem was encountered while processing the label '
+        raiseException('An internal problem was encountered while processing the label '
             'bitmap!')
     labelrows = [labelstream[i:i+labelstreamrowlength] for i in
         range(0, len(labelstream), labelstreamrowlength)]
@@ -611,13 +626,13 @@ def main(args):
             dev = DEV_NODE
 
         if not dev:
-            die("The device '%s' could not be found on this system." % DEV_NAME)
+            raiseException("The device '%s' could not be found on this system." % DEV_NAME)
 
         # create dymo labeler object
         try:
             lm = DymoLabeler(dev)
         except IOError:
-            die(access_error(dev))
+            raiseException(access_error(dev))
 
         print('Printing label..')
         if args.m is not None:

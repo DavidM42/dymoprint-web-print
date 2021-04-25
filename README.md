@@ -16,6 +16,7 @@ cloned for development from https://sbronner.com/dymoprint.html
 * Supports barcode printing
 * Supports image printing
 * Supports combined barcode / qrcode and text printing
+* Simple Web-App to print text only barcodes for now
 
 ## Installation & Configuration
 ### Dependent packages
@@ -26,6 +27,12 @@ pip install -r requirements.txt
 or in userspace
 ```
 pip install --user -r requirements.txt
+```
+or with virtual environment
+```
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 #### For ubuntu based distributions:
@@ -70,6 +77,17 @@ you might need to change the permissions of the hid device (dymoprint will tell 
 
 ([more info](http://www.draisberghof.de/usb_modeswitch/bb/viewtopic.php?t=947))
 
+### Start Web-App
+
+Start the development Web Server via
+
+    python webapp.py
+
+Then you can access the page on port 5000 of the device
+
+### Autostart Web Server
+
+Reference this [blog post](https://blog.merzlabs.com/posts/python-autostart-systemd/) on how to autostart the `webapp.py` python script on boot via systemd.
 
 ### Font management
 
@@ -136,3 +154,6 @@ Besides the travis-ci one should run the following command on a feature implemen
 - ~~print graphics~~
 - ~~plot frame around label~~
 - vertical print
+- mirror advanced options like images and barcodes in Web-App
+  - Currently Web-App only supports raw text
+- Web-App simple authentication

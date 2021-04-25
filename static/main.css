@@ -1,0 +1,86 @@
+/************* General styling and color *******/
+body {
+    font-family: -apple-system, Helvetica, "Helvetica Neue", Roboto, Arial, sans-serif;
+    background-color: #171c20;
+    color: #bfc2c7;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+/*************** Layout  ***********************/
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 10vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+/*************** Feedback boxes styling  ********/
+
+.feedback {
+    margin: 10px 0;
+    padding: 12px;
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+}
+
+.feedback.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+}
+
+.feedback.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+
+/************** Input styling *****************/
+.inputWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+input {
+    background: transparent;
+    box-shadow: none;
+    border: 1px rgb(219, 219, 219) solid;
+    padding: 10px;
+    border-radius: 3px;
+    color: #bfc2c7;
+    font-size: 1.5em;
+
+    
+    flex-grow: 1;
+    max-width: 75%;
+    margin-right: 5px;
+}
+
+button {
+    background: transparent;
+    box-shadow: none;
+    border: 1px rgb(219, 219, 219) solid;
+    padding: 10px;
+    border-radius: 3px;
+    color: #bfc2c7;
+    font-size: 1.5em;
+
+    max-width: 25%;
+}
+
+button:hover {
+    background-color: #999;
+    color: #fff;
+}
