@@ -11,6 +11,9 @@ def input_page():
     text = request.args.get('text')
 
     if text != None:
+        if len(text.strip()) == 0:
+            return render_template('index.html', error="Label has to contain text")
+
         emulated_args = [text]
         args = dymoprint.parse_args(emulated_args)
         try:
@@ -32,4 +35,4 @@ def input_page():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', debug=False)
+    app.run('0.0.0.0', debug=True)
