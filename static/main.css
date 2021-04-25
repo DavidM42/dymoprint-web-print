@@ -61,11 +61,21 @@ input {
     border-radius: 3px;
     color: #bfc2c7;
     font-size: 1.5em;
+}
 
-    
+input#lineOne {
     flex-grow: 1;
     max-width: 75%;
     margin-right: 5px;
+}
+
+.multilineWrapper {
+    display: flex;
+    flex-direction: column;    
+}
+
+input.multiline {
+    margin-top: 10px;
 }
 
 button {

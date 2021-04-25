@@ -18,10 +18,14 @@
             {% elif success %}
                 <span class="feedback success">{{success}}</span>
             {% endif %}
-            <form method="GET">
+            <form action="/print" method="GET">
                 <div class="inputWrapper">
-                    <input name="text" id="textInput">
+                    <input name="lineOne" id="lineOne" placeholder="Main line">
                     <button type="submit">Drucken</button>
+                </div>
+                <div class="multilineWrapper">
+                    <input name="lineTwo" class="multiline" placeholder="(Optional) Line 2">
+                    <input name="lineThree" class="multiline" placeholder="(Optional) Line 3">
                 </div>
             </form>
         </div>
@@ -30,7 +34,7 @@
     <script>
         // remove url query from browser path
         // to not reprint on refresh
-        window.history.replaceState(null, null, window.location.pathname);
+        window.history.replaceState(null, null, '/');
     </script>
 </body>
 </html>

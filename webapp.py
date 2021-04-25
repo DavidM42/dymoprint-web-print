@@ -7,16 +7,28 @@ import dymoprint
 app = Flask(__name__)
 
 @app.route('/')
+def landing_page():
+    return render_template('index.html')
+
+@app.route('/print')
 def input_page():
-    text = request.args.get('text')
+    # for now hardcode max 3 lines because more is super small
+    line1 = request.args.get('lineOne')
+    line2 = request.args.get('lineTwo')
+    line3 = request.args.get('lineThree')
 
-    if text != None:
-        if len(text.strip()) == 0:
-            return render_template('index.html', error="Label has to contain text")
+    if line1 != None:
+        if len(line1.strip()) == 0:
+            return render_template('index.html', error="Label has to contain text on first line")
+        else:
+            emulated_args = [line1]
 
-        # TODO checkbox toggle for on off multiline
-        # so difference between `dymoprint Hello World` and `dymoprint "Hello World"`
-        emulated_args = text.split(" ")
+        if line2 != None and len(line2.strip()) > 0:
+            emulated_args.append(line2)
+
+        if line3 != None and len(line3.strip()) > 0:
+            emulated_args.append(line3)
+
         args = dymoprint.parse_args(emulated_args)
         try:
             dymoprint.main(args)
@@ -33,8 +45,8 @@ def input_page():
             type, value, tb = sys.exc_info()
             traceback.print_exc()
             pdb.post_mortem(tb)
-
-    return render_template('index.html')
+    else:
+        return render_template('index.html', error="You have to print something")
 
 if __name__ == '__main__':
     app.run('0.0.0.0', debug=True)
