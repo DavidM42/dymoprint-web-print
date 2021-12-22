@@ -24,6 +24,7 @@ h1 {
 .content {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 /*************** Feedback boxes styling  ********/
@@ -65,7 +66,6 @@ input {
 
 input#lineOne {
     flex-grow: 1;
-    max-width: 75%;
     margin-right: 5px;
 }
 
@@ -86,11 +86,34 @@ button {
     border-radius: 3px;
     color: #bfc2c7;
     font-size: 1.5em;
-
-    max-width: 25%;
 }
 
 button:hover {
     background-color: #999;
     color: #fff;
+}
+
+/************** Responsive mobile/desktop styling *****************/
+@media only screen and (max-width: 1000px) {
+    form {
+        max-width: 95vw;
+    }
+
+    input#lineOne {
+        max-width: 60%;
+    }
+
+    button {
+        flex-grow: 1;
+    }
+}
+
+@media only screen and (min-width: 1001px) {
+    input#lineOne {
+        max-width: 75%;
+    }
+
+    button {
+        max-width: 25%;
+    }
 }
