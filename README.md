@@ -141,6 +141,22 @@ Besides the travis-ci one should run the following command on a feature implemen
 ./dymoprint -c code128 Test "bc_txt"
 ```
 
+## Problem solutions
+
+### libopenjp2.so.7 import
+
+If you get
+
+```
+ImportError: libopenjp2.so.7: cannot open shared object file: No such file or directory
+```
+
+then on debian based distros you just need to install libopenjp2-7
+
+```
+sudo apt-get install libopenjp2-7
+```
+
 
 ### ToDo
 - (?)support multiple ProductIDs (1001, 1002) -> use usb-modeswitch?
