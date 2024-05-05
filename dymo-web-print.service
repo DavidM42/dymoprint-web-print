@@ -1,0 +1,16 @@
+# see https://blog.merzlabs.com/posts/python-autostart-systemd/ for tipp on how to enable this file
+[Unit]
+Description=Dymo label printer web app
+After=network.target
+
+[Service]
+# adjust following values to your project directory
+WorkingDirectory=/home/<USER>/dymoprint-web-print
+ExecStart=/home/<USER>/dymoprint-web-print/venv/bin/python /home/<USER>/dymoprint-web-print/webapp.py
+# adjust these to your normal user e.g. pi
+User=<USER>
+Group=<USER>
+
+
+[Install]
+WantedBy=multi-user.target
