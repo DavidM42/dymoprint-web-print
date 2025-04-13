@@ -18,6 +18,38 @@ cloned for development from https://sbronner.com/dymoprint.html
 * Supports combined barcode / qrcode and text printing
 * Simple Web-App to print text only barcodes for now
 
+## Personal quick start guide for Raspberry Pi
+
+1. Fonts and dependancies
+```
+sudo apt install libjpeg-dev zlib1g-dev libfreetype6-dev
+sudo apt install fonts-ubuntu
+fc-cache -f -v
+```
+
+2. UDEV rules
+```
+./ubuntu_debian_device_setup.sh
+```
+and reboot
+
+3. webapp.py systemd service (needs working dirctory & user)
+```
+Description=Dymoprint web print label printer
+After=network.target
+
+[Service]
+ExecStart=/home/pi/dymoprint-web-print/venv/bin/python /home/pi/dymoprint-web-print/webapp.py
+WorkingDirectory=/home/pi/dymoprint-web-print
+Environment=HOME=/home/pi
+User=pi
+Group=pi
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
 ## Installation & Configuration
 ### Dependent packages
 
@@ -30,7 +62,7 @@ pip install --user -r requirements.txt
 ```
 or with virtual environment
 ```
-virtualenv venv
+python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
